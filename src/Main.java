@@ -5,6 +5,7 @@ public class Main {
     static Manager manager;
     static Scanner scanner;
     public static void main(String[] args) {
+        //В классе будет только вывод и ввод информации с консоли, а также вызов методов в классе Manager
         manager = new Manager();
         scanner = new Scanner(System.in);
         Integer command = null;
