@@ -1,15 +1,16 @@
 public class Subtask extends Task {
-    Subtask (String name, String description) {
-        super(name, description);
-        setType(TaskType.SUBTASK);
+    public Subtask (Integer id, String name, String description, Integer parentId) {
+        super(id, name, description, parentId);
     }
 
     @Override
     public String toString() {
         return "  Subtask{" +
+                "id='" + getId() + '\'' +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription()+ '\'' +
                 ", status=" + getStatus() +
                 '}';
     }
+
 }
