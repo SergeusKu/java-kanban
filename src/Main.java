@@ -1,12 +1,10 @@
+import control.Manager;
+import taskTypes.Status;
+
 public class Main {
     static Manager manager;
     public static void main(String[] args) {
-        //В тех. задании относительно интерфейса написано, что нужно перед реализацией ответить себе на вопрос
-        // "Должен ли быть у приложения интерфейс"
-        //Я решил что хочу чтобы в моем приложении должен быть интерфейс потому что я люблю проверять
-        // не только описанные тесты
-        // Но видимо думать своей головой тоже не приветствуется
-        // Поэтому делаю только заданные тест кейсы.
+        // Делаю только заданные тест кейсы.
         manager = new Manager();
 
         manager.addEpic("Эпик 0", "...");
@@ -71,7 +69,7 @@ public class Main {
 
         System.out.println("Удаляем все");
         manager.removeAll();
-        //System.out.println(manager.getAll());
+        System.out.println(manager.getAll());
     }
 
 }

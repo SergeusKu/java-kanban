@@ -1,4 +1,10 @@
-import java.awt.desktop.SystemSleepEvent;
+package control;
+import taskTypes.Status;
+
+import taskTypes.Epic;
+import taskTypes.Subtask;
+import taskTypes.Task;
+
 import java.util.HashMap;
 import java.util.ArrayList;
 public class Manager {
@@ -7,7 +13,7 @@ public class Manager {
     private HashMap <Integer, Subtask> subtasks;
     private static Integer commonId = -1;
 
-    Manager() {
+    public Manager() {
         tasks = new HashMap<>();
         epics = new HashMap<>();
         subtasks = new HashMap<>();

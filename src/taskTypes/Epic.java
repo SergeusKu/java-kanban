@@ -1,3 +1,5 @@
+package taskTypes;
+
 import java.util.Objects;
 
 public class Epic {
@@ -61,7 +63,7 @@ public class Epic {
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "taskTypes.Epic{" +
                 "id='" + getId() + '\'' +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription()+ '\'' +

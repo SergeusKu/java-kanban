@@ -1,4 +1,5 @@
-import java.util.Objects;
+package taskTypes;
+
 public class Task extends Epic {
     private Integer parentId;
     public Task(Integer id, String name, String description, Integer parentId) {
@@ -9,7 +10,7 @@ public class Task extends Epic {
 
     @Override
     public String toString() {
-        return " Task{" +
+        return " taskTypes.Task{" +
                 "id='" + getId() + '\'' +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription() + '\'' +

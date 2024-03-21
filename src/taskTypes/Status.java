@@ -1,3 +1,5 @@
+package taskTypes;
+
 public enum Status {
     //Список статусов задач содержит: Название типа, Признак финального статуса, приоритет отображения
     //Изменение статусов возможно только если следующий статус с большим приоритетом отображения,
@@ -15,13 +17,6 @@ public enum Status {
             this.sequence = sequence;
         }
     //Метод позволяет получить следующий статус
-
-    public String getStatusName() {
-        return statusName;
-    }
-    public Boolean getIsFinal() {
-        return isFinal;
-    }
     public Integer getSequence() {
         return sequence;
     }
