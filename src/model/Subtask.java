@@ -1,18 +1,24 @@
-package taskTypes;
+package model;
 
 public class Subtask extends Task {
+    private Integer parentId;
     public Subtask (Integer id, String name, String description, Integer parentId) {
-        super(id, name, description, parentId);
+        super(id, name, description);
+        this.parentId = parentId;
     }
 
     @Override
     public String toString() {
-        return "  taskTypes.Subtask{" +
+        return " Subtask{" +
                 "id='" + getId() + '\'' +
                 "name='" + getName() + '\'' +
                 ", description='" + getDescription()+ '\'' +
                 ", status=" + getStatus() +
                 '}';
+    }
+
+    public Integer getParentId() {
+        return parentId;
     }
 
 }

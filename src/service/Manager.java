@@ -1,9 +1,9 @@
-package control;
-import taskTypes.Status;
+package service;
+import model.Status;
 
-import taskTypes.Epic;
-import taskTypes.Subtask;
-import taskTypes.Task;
+import model.Epic;
+import model.Subtask;
+import model.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ public class Manager {
     private HashMap<Integer, Task> tasks;
     private HashMap <Integer, Epic> epics;
     private HashMap <Integer, Subtask> subtasks;
-    private static Integer commonId = -1;
+    private Integer commonId = 0;
 
     public Manager() {
         tasks = new HashMap<>();
@@ -30,22 +30,21 @@ public class Manager {
     }
 
     //Метод для создания типа задачи с названием и описанием
-    public void addTask(String name, String description, Integer epicId) {
+    public void addTask(String name, String description) {
             Integer taskId = generateId();
-            Task task = new Task(taskId, name, description, epicId);
+            Task task = new Task(taskId, name, description);
 
             if (tasks.containsValue(task)) {
                 System.out.println("Уже есть такая задача!");
             } else {
                 tasks.put(taskId, task);
             }
-        updateEpicStatus();
     }
 
     //Метод для создания типа задачи с названием и описанием
-    public void addSubtask(String name, String description, Integer taskId) {
+    public void addSubtask(String name, String description, Integer epicId) {
         Integer subtaskId = generateId();
-        Subtask subtask = new Subtask(subtaskId, name, description, taskId);
+        Subtask subtask = new Subtask(subtaskId, name, description, epicId);
 
         if (subtasks.containsValue(subtask)) {
             System.out.println("Уже есть такая задача!");
@@ -54,13 +53,45 @@ public class Manager {
         }
         updateEpicStatus();
     }
-    public int generateId() {
-        commonId++;
-        return commonId ;
+
+
+    private int generateId() {
+        return commonId++;
     }
 
-    //Больше всего ковырялся с этим методом
-    //Метод позволяет изменить статус задачи с учетом изменения статуса родительских и дочерних задач
+    //Метод позволяет изменить название и описание Задачи/Эпика/Подзадачи
+    public void changeNameAndDescription(Integer id, String name, String description) {
+        if (epics.containsKey(id)) {
+            epics.get(id).setName(name);
+            epics.get(id).setDescription(description);
+
+        } else if (subtasks.containsKey(id)) {
+            subtasks.get(id).setName(name);
+            subtasks.get(id).setDescription(description);
+
+        } else if (tasks.containsKey(id)) {
+            tasks.get(id).setName(name);
+            tasks.get(id).setDescription(description);
+
+        }
+    }
+    //Метод позволяет получить только конкретную Задачу/Эпик/Подзадачу
+    public String getById(Integer id) {
+        String printer = "";
+        if (epics.containsKey(id)) {
+            printer += epics.get(id);
+
+        } else if (subtasks.containsKey(id)) {
+            printer += subtasks.get(id);
+
+        } else if (tasks.containsKey(id)) {
+            printer += tasks.get(id);
+
+        }
+        return printer;
+    }
+
+    //Метод позволяет изменить статус задачи
     public void changeStatus(Integer id, Status newStatus) {
         if (subtasks.containsKey(id)) {
             subtasks.get(id).setStatus(newStatus);
@@ -68,27 +99,18 @@ public class Manager {
 
         } else if (tasks.containsKey(id)) {
             tasks.get(id).setStatus(newStatus);
-            updateEpicStatus();
-        }
+         }
 
     }
-    public void updateEpicStatus() {
+    private void updateEpicStatus() {
         for (Integer epicId : epics.keySet()){
             ArrayList<Status> statuses = new ArrayList<>();
 
-            if (getTasksByEpicId(epicId)!=null) {
-                ArrayList<Task> taskList = new ArrayList<>();
-                taskList.addAll(getTasksByEpicId(epicId));
-                for (Task task : taskList){
+            if (getSubtasksByEpicId(epicId)!=null) {
+                ArrayList<Task> subtaskList = new ArrayList<>();
+                subtaskList.addAll(getSubtasksByEpicId(epicId));
+                for (Task task : subtaskList){
                     statuses.add(task.getStatus());
-
-                    if (getSubtasksByTaskId(task.getId())!=null) {
-                        ArrayList<Subtask> subtaskList  = new ArrayList<>();
-                        subtaskList.addAll(getSubtasksByTaskId((task.getId())));
-                        for (Subtask subtask : subtaskList){
-                            statuses.add(subtask.getStatus());
-                        }
-                    }
                 }
             }
 
@@ -103,22 +125,19 @@ public class Manager {
     }
     public String getAll() {
         String printer = "";
-        if(epics.isEmpty() && tasks.isEmpty() && subtasks.isEmpty()){
-            printer += "пусто";
-        }
         if (!epics.isEmpty()){
             for (Integer epicId : epics.keySet()){
                 printer += epics.get(epicId) + "\n";
             }
         }
-        if (!tasks.isEmpty()){
-            for (Integer taskId : tasks.keySet()){
-                printer += tasks.get(taskId) + "\n";
-            }
-        }
         if (!subtasks.isEmpty()){
             for (Integer subtaskId : subtasks.keySet()){
                 printer += subtasks.get(subtaskId) + "\n";
+            }
+        }
+        if (!tasks.isEmpty()){
+            for (Integer taskId : tasks.keySet()){
+                printer += tasks.get(taskId) + "\n";
             }
         }
         return printer;
@@ -130,16 +149,11 @@ public class Manager {
             printer += epics.get(epicId);
             printer += "\nLinks{";
 
-            if (!getTasksByEpicId(epicId).isEmpty()) {
-                ArrayList<Task> taskList = new ArrayList<>();
-                taskList.addAll(getTasksByEpicId(epicId));
-                for (Task task : taskList) {
-                    printer += "\n" + tasks.get(task.getId());
-                    if (getSubtasksByTaskId(task.getId())!= null){
-                        for (Subtask subtask : getSubtasksByTaskId(task.getId())) {
-                            printer +="\n" + subtask;
-                        }
-                    }
+            if (!getSubtasksByEpicId(epicId).isEmpty()) {
+                ArrayList<Subtask> subtaskList = new ArrayList<>();
+                subtaskList.addAll(getSubtasksByEpicId(epicId));
+                for (Subtask subtask : subtaskList) {
+                    printer += "\n" + subtask;
                 }
             }
             return printer+="}" ;
@@ -147,25 +161,11 @@ public class Manager {
         return null;
     }
 
-    public ArrayList<Task> getTasksByEpicId(Integer epicId) {
-        ArrayList<Task> tasksIdList = new ArrayList<>();
-        if (!tasks.isEmpty()){
-            for (Integer taskId : tasks.keySet()){
-                if (tasks.get(taskId).getParentId() == epicId){
-                    tasksIdList.add(tasks.get(taskId));
-                }
-            }
-            return tasksIdList;
-        } else {
-            return null;
-        }
-    }
-
-    public ArrayList<Subtask> getSubtasksByTaskId (Integer taskId) {
+    public ArrayList<Subtask> getSubtasksByEpicId(Integer epicId) {
         ArrayList<Subtask> subtasksIdList = new ArrayList<>();
         if (!subtasks.isEmpty()){
             for (Integer subtaskId : subtasks.keySet()){
-                if (subtasks.get(subtaskId).getParentId() == taskId){
+                if (subtasks.get(subtaskId).getParentId() == epicId){
                     subtasksIdList.add(subtasks.get(subtaskId));
                 }
             }
@@ -176,33 +176,37 @@ public class Manager {
     }
 
     //Метод удаления всех задач
-    public void removeAll() {
-        epics.clear();
+    public void removeAllEpics() {
+        ArrayList<Integer> epicsIdToRemove = new ArrayList<>();
+        epicsIdToRemove.addAll(epics.keySet());
+        for (Integer epicId : epicsIdToRemove){
+            removeEpic(epicId);
+        }
+    }
+
+    //Метод удаления всех задач
+    public void removeAllTask() {
         tasks.clear();
+    }
+
+    //Метод удаления всех задач
+    public void removeAllSubtask() {
         subtasks.clear();
     }
-    //Метод удаления эпика и всех привязанных задач и подзадач
+    //Метод удаления эпика и всех привязанных подзадач
     public void removeEpic(Integer epicId) {
-        if (getTasksByEpicId(epicId)!=null) {
-            ArrayList<Task> taskList = new ArrayList<>();
-            taskList.addAll(getTasksByEpicId(epicId));
-            for (Task task : taskList){
-                removeTask(task.getId());
+        if (getSubtasksByEpicId(epicId)!=null) {
+            ArrayList<Subtask> subtaskList = new ArrayList<>();
+            subtaskList.addAll(getSubtasksByEpicId(epicId));
+            for (Subtask subtask : subtaskList){
+                removeSubtask(subtask.getId());
             }
         }
         epics.remove(epicId);
     }
     //Метод удаления конкретной задачи и всех подзадач
     public void removeTask(Integer taskId) {
-        if (getSubtasksByTaskId(taskId)!=null) {
-            ArrayList<Subtask> subtaskList  = new ArrayList<>();
-            subtaskList.addAll(getSubtasksByTaskId(taskId));
-            for (Subtask subtask : subtaskList){
-                removeSubtask(subtask.getId());
-            }
-        }
         tasks.remove(taskId);
-        updateEpicStatus();
     }
     //Метод удаления конкретной сабтаски
     public void removeSubtask(Integer subtaskId) {

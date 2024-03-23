@@ -1,4 +1,4 @@
-package taskTypes;
+package model;
 
 public enum TaskType {
     //Список типов задач содержит: Название типа, ....(пока не придумал что еще понадобится)

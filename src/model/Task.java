@@ -1,18 +1,29 @@
-package taskTypes;
+package model;
 
 import java.util.Objects;
 
-public class Epic {
+public class Task {
     private Integer id;
     private String name; //Название задачи
     private String description; //Описание задачи
     private Status status; //Текущий статус задачи
     private static Integer commonId = -1;
-    public Epic(Integer id, String name, String description) {
+
+    public Task(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + getId() + '\'' +
+                "name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status=" + getStatus() +
+                '}';
     }
 
     public Integer getId() {
@@ -38,7 +49,6 @@ public class Epic {
     public void setStatus(Status status) {
         this.status = status;
     }
-
     @Override
     public int hashCode() {
         int hash = 17;
@@ -56,19 +66,8 @@ public class Epic {
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return true;
-        Epic otherEpic = (Epic) obj;
-        return Objects.equals(id, otherEpic.getId()) &&
-                Objects.equals(name, otherEpic.getName());
+        Task otherTask = (Task) obj;
+        return Objects.equals(id, otherTask.getId()) &&
+                Objects.equals(name, otherTask.getName());
     }
-
-    @Override
-    public String toString() {
-        return "taskTypes.Epic{" +
-                "id='" + getId() + '\'' +
-                "name='" + getName() + '\'' +
-                ", description='" + getDescription()+ '\'' +
-                ", status=" + getStatus() +
-                '}';
-    }
-
 }
