@@ -7,7 +7,6 @@ public class Task {
     private String name; //Название задачи
     private String description; //Описание задачи
     private Status status; //Текущий статус задачи
-    private static Integer commonId = -1;
 
     public Task(Integer id, String name, String description) {
         this.id = id;
