@@ -7,6 +7,7 @@ public enum TaskType {
     SUBTASK("Подзадача");
 
     private final String taskName;
+
     TaskType(String taskName) {
         this.taskName = taskName;
     }

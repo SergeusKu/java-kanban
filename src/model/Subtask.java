@@ -2,7 +2,12 @@ package model;
 
 public class Subtask extends Task {
     private Integer parentId;
-    public Subtask (Integer id, String name, String description, Integer parentId) {
+
+    public Subtask(String name, String description, Integer parentId) {
+        super(name, description);
+        this.parentId = parentId;
+    }
+    public Subtask(Integer id, String name, String description, Integer parentId) {
         super(id, name, description);
         this.parentId = parentId;
     }
@@ -12,7 +17,7 @@ public class Subtask extends Task {
         return " Subtask{" +
                 "id='" + getId() + '\'' +
                 "name='" + getName() + '\'' +
-                ", description='" + getDescription()+ '\'' +
+                ", description='" + getDescription() + '\'' +
                 ", status=" + getStatus() +
                 '}';
     }
