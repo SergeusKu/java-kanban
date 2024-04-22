@@ -2,15 +2,16 @@ package service;
 
 import model.Task;
 
+import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager{
-    private ArrayList<Task> historyView;
     private static final int NUMBERS_OF_SAVED_VIEWS = 10;
+    private LinkedList<Task> historyView;
 
     public InMemoryHistoryManager() {
-        historyView = new ArrayList<>();
+        historyView = new LinkedList<>();
     }
 
     @Override

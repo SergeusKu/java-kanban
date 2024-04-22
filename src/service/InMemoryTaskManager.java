@@ -8,12 +8,14 @@ import model.Task;
 
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
     private HashMap<Integer, Task> tasks;
     private HashMap<Integer, Epic> epics;
     private HashMap<Integer, Subtask> subtasks;
     private ArrayList<Integer> allId = new ArrayList<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
 
     public InMemoryTaskManager() {
         tasks = new HashMap<>();
@@ -54,8 +56,8 @@ public class InMemoryTaskManager implements TaskManager{
     }
     @Override
     //Метод для обновления подзадачи с названием и описанием
-    public void updateSubtask(Integer id, Subtask subtask) {
-        subtasks.put(id, subtask);
+    public void updateSubtask(Subtask subtask) {
+        subtasks.put(subtask.getId(), subtask);
         updateEpicStatus(subtask.getParentId());
     }
 
@@ -77,30 +79,18 @@ public class InMemoryTaskManager implements TaskManager{
     //Метод "Получения по идентификатору"
     public Task getById(Integer id) {
         if (epics.containsKey(id)) {
+            historyManager.add(epics.get(id));
             return epics.get(id);
 
         } else if (subtasks.containsKey(id)) {
+            historyManager.add(subtasks.get(id));
             return subtasks.get(id);
 
         } else {
+            historyManager.add(tasks.get(id));
             return tasks.get(id);
         }
     }
-
-//    @Override
-//    public <T> T getById(Integer id) {
-//        if (epics.containsKey(id)) {
-//            return (T) epics.get(id);
-//
-//        } else if (subtasks.containsKey(id)) {
-//            return (T) subtasks.get(id);
-//
-//        } else {
-//            return (T) tasks.get(id);
-//        }
-//
-//    }
-
     private void updateEpicStatus(Integer epicId) {
         ArrayList<Status> statuses = new ArrayList<>();
 
@@ -187,5 +177,9 @@ public class InMemoryTaskManager implements TaskManager{
         updateEpicStatus(subtasks.get(subtaskId).getParentId());
         subtasks.remove(subtaskId);
     }
-
+    @Override
+    //Метод получения истории просмотров
+    public List<Task> getHistory(){
+        return historyManager.getHistory();
+    }
 }

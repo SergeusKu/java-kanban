@@ -5,6 +5,7 @@ import model.Subtask;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     public void addEpic(Epic epic);
@@ -19,7 +20,7 @@ public interface TaskManager {
     public void updateTask(Task task);
 
     //Метод для обновления подзадачи с названием и описанием
-    public void updateSubtask(Integer id, Subtask subtask);
+    public void updateSubtask(Subtask subtask);
 
     //Метод "Получения по идентификатору"
     public <T> T getById(Integer id);
@@ -53,5 +54,7 @@ public interface TaskManager {
 
     //Метод удаления конкретной сабтаски
     public void removeSubtask(Integer subtaskId);
+    //Метод получения истории просмотров
+    public List<Task> getHistory();
 
 }
