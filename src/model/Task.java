@@ -19,6 +19,12 @@ public class Task {
         this.description = description;
         this.status = Status.NEW;
     }
+    public Task(Task task) {
+        this.id = task.getId();
+        this.name = task.getName();
+        this.description = task.getDescription();
+        this.status = task.getStatus();
+    }
 
     @Override
     public String toString() {
@@ -55,6 +61,7 @@ public class Task {
     public void setStatus(Status status) {
         this.status = status;
     }
+
     @Override
     public int hashCode() {
         int hash = 17;
