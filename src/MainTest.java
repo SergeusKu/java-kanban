@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class MainTest {
     private TaskManager inMemoryTaskManager;
     private HistoryManager historyManager;
@@ -20,6 +21,7 @@ class MainTest {
     private Epic epic_4;
     private Subtask subtask_5;
     private Task task_6;
+
     @BeforeEach
     //Cоздаем "Эпик 0", две подзадачи "Подзадача 1",
     // "Подзадача 2" и несвязанную задачу "Задача 3"
@@ -39,7 +41,7 @@ class MainTest {
         task_3 = new Task("Задача 3", "...");
         inMemoryTaskManager.addTask(task_3);
 
-        epic_4 = new Epic( "Эпик 4", "...");
+        epic_4 = new Epic("Эпик 4", "...");
         inMemoryTaskManager.addEpic(epic_4);
 
         subtask_5 = new Subtask("Подзадача 5", "...", epic_4.getId());
@@ -49,6 +51,7 @@ class MainTest {
         inMemoryTaskManager.addTask(task_6);
 
     }
+
     @Test
     //Проверям что вывод эпиков будет соответствовать ожидаемому списку
     public void getAllEpics() {
@@ -56,30 +59,33 @@ class MainTest {
         ArrayList<Epic> epicsList = new ArrayList<>(inMemoryTaskManager.getAllEpics());
         allEpicsList.add(epic_0);
         allEpicsList.add(epic_4);
-        assertEquals(allEpicsList.toString(),epicsList.toString(),
+        assertEquals(allEpicsList.toString(), epicsList.toString(),
                 "Список Эпиков не соответствует добавленным");
     }
+
     @Test
     //Проверям что вывод подзадач будет соответствовать ожидаемому списку
     public void getAllSubtasks() {
         ArrayList<Subtask> allSubtasksList = new ArrayList<>();
-        ArrayList<Subtask> subtasksList  = new ArrayList<>(inMemoryTaskManager.getAllSubtasks());
+        ArrayList<Subtask> subtasksList = new ArrayList<>(inMemoryTaskManager.getAllSubtasks());
         allSubtasksList.add(subtask_1);
         allSubtasksList.add(subtask_2);
         allSubtasksList.add(subtask_5);
-        assertEquals(allSubtasksList.toString(),subtasksList.toString(),
+        assertEquals(allSubtasksList.toString(), subtasksList.toString(),
                 "Список Подзадач не соответствует добавленным");
     }
+
     @Test
     //Проверям что вывод задач будет соответствовать ожидаемому списку
     public void getAllTasks() {
         ArrayList<Task> allTasksList = new ArrayList<>();
-        ArrayList<Task> tasksList  = new ArrayList<>(inMemoryTaskManager.getAllTasks());
+        ArrayList<Task> tasksList = new ArrayList<>(inMemoryTaskManager.getAllTasks());
         allTasksList.add(task_3);
         allTasksList.add(task_6);
-        assertEquals(allTasksList.toString(),tasksList.toString(),
+        assertEquals(allTasksList.toString(), tasksList.toString(),
                 "Список Задач не соответствует добавленным");
     }
+
     @Test
     //Проверяем что после изменения названия и описания эпика описание и название соответствуют ожидаемым
     public void checkEpicNameAndDescriptionById() {
@@ -127,24 +133,28 @@ class MainTest {
         assertEquals(Status.DONE, epic_0.getStatus(),
                 "Статус Эпика не соответствует DONE");
     }
+
     @Test
     //попробуйте удалить одну из подзадач.
     public void removeSubtask() {
         inMemoryTaskManager.removeSubtask(subtask_5.getId());
         assertNull(inMemoryTaskManager.getById(subtask_5.getId()));
     }
+
     @Test
     //попробуйте удалить задачу
     public void removeTask() {
         inMemoryTaskManager.removeTask(task_6.getId());
         assertNull(inMemoryTaskManager.getById(task_6.getId()));
     }
+
     @Test
     //попробуйте удалить один из эпиков.
     public void removeEpic() {
         inMemoryTaskManager.removeEpic(epic_0.getId());
         assertNull(inMemoryTaskManager.getById(epic_0.getId()));
     }
+
     @Test
     //Удаляем все задачи
     public void removeAllTask() {
@@ -164,8 +174,8 @@ class MainTest {
     //Удаляем все Эпики
     public void removeAllEpics() {
         inMemoryTaskManager.removeAllEpics();
-        assertTrue(inMemoryTaskManager.getAllEpics().size()==0);
-        assertTrue(inMemoryTaskManager.getAllSubtasks().size()==0);
+        assertTrue(inMemoryTaskManager.getAllEpics().size() == 0);
+        assertTrue(inMemoryTaskManager.getAllSubtasks().size() == 0);
     }
 
     @Test
@@ -184,6 +194,7 @@ class MainTest {
         assertEquals(task_3, tasks.get(0), "Задачи не совпадают.");
         assertEquals(task_6, tasks.get(1), "Задачи не совпадают.");
     }
+
     @Test
     //проверьте, что объект Epic нельзя добавить в самого себя в виде подзадачи;
     public void epicObjectCannotBeAddedToItself() {
@@ -192,28 +203,31 @@ class MainTest {
             inMemoryTaskManager.addEpic(epic_7);
             epic_7.setSubtaskIdList(7);
 
-        } catch (Error error){
-            assertTrue(error.getMessage()=="Epic нельзя добавить в самого себя в виде подзадачи");
+        } catch (Error error) {
+            assertTrue(error.getMessage() == "Epic нельзя добавить в самого себя в виде подзадачи");
         }
     }
+
     @Test
     //проверьте, что объект Subtask нельзя сделать своим же эпиком;
     public void subtaskObjectCannotBeMadeItsOwnEpic() {
         try {
-            Subtask subtask_7 = new Subtask(7,"Подзадача 7", "...", 7);
+            Subtask subtask_7 = new Subtask(7, "Подзадача 7", "...", 7);
             inMemoryTaskManager.addSubtask(subtask_7);
-        } catch (Error error){
-            assertTrue(error.getMessage()=="Subtask нельзя сделать своим же эпиком");
+        } catch (Error error) {
+            assertTrue(error.getMessage() == "Subtask нельзя сделать своим же эпиком");
         }
 
     }
+
     @Test
     //убедитесь, что утилитарный класс всегда возвращает проинициализированные и готовые к работе экземпляры менеджеров;
     public void utilityClassAlwaysReturnsInitializedAndReadyToUseManager() {
         TaskManager taskManager = new InMemoryTaskManager();
-        assertTrue( taskManager.getClass() == inMemoryTaskManager.getClass() );
+        assertTrue(taskManager.getClass() == inMemoryTaskManager.getClass());
 
     }
+
     @Test
     //проверьте, что InMemoryTaskManager действительно добавляет задачи разного типа и может найти их по id;
     public void addsTasksOfDifferentTypesAndCanFindThemById() {
@@ -227,24 +241,27 @@ class MainTest {
         assertEquals(inMemoryTaskManager.getById(epic_A.getId()), epic_A);
         assertEquals(inMemoryTaskManager.getById(epic_B.getId()), epic_B);
     }
+
     @Test
     //проверьте, что задачи с заданным id и сгенерированным id не конфликтуют внутри менеджера;
     public void conflictTasksWithGivenIdAndGeneratedId() {
         try {
-            Subtask subtask_7 = new Subtask(6,"Подзадача 7", "...", 0);
+            Subtask subtask_7 = new Subtask(6, "Подзадача 7", "...", 0);
             inMemoryTaskManager.addSubtask(subtask_7);
 
-        } catch (Error error){
-            assertTrue(error.getMessage()=="Задача с таким id уже существует");
+        } catch (Error error) {
+            assertTrue(error.getMessage() == "Задача с таким id уже существует");
         }
     }
+
     @Test
     //создайте тест, в котором проверяется неизменность задачи (по всем полям) при добавлении задачи в менеджер
     public void immutabilityTask() {
         Epic epic_A = new Epic("Эпик 0", "...");
         inMemoryTaskManager.addEpic(epic_A);
-        assertEquals(inMemoryTaskManager.getById(epic_A.getId()).toString(),epic_A.toString());
+        assertEquals(inMemoryTaskManager.getById(epic_A.getId()).toString(), epic_A.toString());
     }
+
     @Test
     //убедитесь, что задачи, добавляемые в HistoryManager, сохраняют предыдущую версию задачи и её данных.
     public void addedTaskRetainPreviousVersion() {

@@ -8,6 +8,7 @@ public class Epic extends Task {
     public Epic(String name, String description) {
         super(name, description);
     }
+
     public Epic(Epic epic) {
         super(epic);
     }
@@ -23,8 +24,8 @@ public class Epic extends Task {
     }
 
     public void setSubtaskIdList(Integer subtaskId) {
-        if(this.getId()==subtaskId){
-            throw new Error ("Epic нельзя добавить в самого себя в виде подзадачи");
+        if (this.getId() == subtaskId) {
+            throw new Error("Epic нельзя добавить в самого себя в виде подзадачи");
         }
         this.subtaskIdList.add(subtaskId);
     }
@@ -32,6 +33,7 @@ public class Epic extends Task {
     public void deleteSubtaskIdList(Integer subtaskId) {
         this.subtaskIdList.remove(subtaskId);
     }
+
     public void deleteAllSubtaskIdList() {
         this.subtaskIdList.clear();
     }

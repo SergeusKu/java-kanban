@@ -8,17 +8,19 @@ public class Task {
     private String description; //Описание задачи
     private Status status; //Текущий статус задачи
 
-    public Task( String name, String description) {
+    public Task(String name, String description) {
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
     }
+
     public Task(Integer id, String name, String description) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.status = Status.NEW;
     }
+
     public Task(Task task) {
         this.id = task.getId();
         this.name = task.getName();
@@ -35,18 +37,23 @@ public class Task {
                 ", status=" + getStatus() +
                 '}';
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Integer getId() {
         return id;
     }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDescription() {
         return description;
     }
@@ -58,6 +65,7 @@ public class Task {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public void setStatus(Status status) {
         this.status = status;
     }
@@ -75,6 +83,7 @@ public class Task {
         }
         return hash;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

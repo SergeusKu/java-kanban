@@ -54,6 +54,7 @@ public interface TaskManager {
 
     //Метод удаления конкретной сабтаски
     public void removeSubtask(Integer subtaskId);
+
     //Метод получения истории просмотров
     public List<Task> getHistory();
 

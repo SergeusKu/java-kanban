@@ -7,11 +7,15 @@ public class Subtask extends Task {
         super(name, description);
         this.parentId = parentId;
     }
+
     public Subtask(Integer id, String name, String description, Integer parentId) {
         super(id, name, description);
-        if (id==parentId){ throw new Error("Subtask нельзя сделать своим же эпиком");}
+        if (id == parentId) {
+            throw new Error("Subtask нельзя сделать своим же эпиком");
+        }
         this.parentId = parentId;
     }
+
     public Subtask(Subtask subtask) {
         super(subtask);
         this.parentId = subtask.getParentId();
